@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Console.WriteLine("Hello, Merry Chrystler");
+            Challenge_1 _1 = new Challenge_1();
+            _1.Execute();
         }
     }
 }
