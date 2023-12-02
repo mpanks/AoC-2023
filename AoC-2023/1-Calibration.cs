@@ -9,10 +9,11 @@ namespace AoC_2023
     internal class _1_Calibration
     {
     }
-    //Given file of strings
-    //Concat first and last digit from each string
-    //Get 2 digit num
-    //Add digits together
+    //File of strings
+    //Part 1: get digits in strings
+    //Concat first and last digit together
+    //Calculate total from all strings
+    //Part 2: some of the numbers are written, these are also digits
     public class Challenge_1
     {
         private string FileName;
@@ -52,14 +53,12 @@ namespace AoC_2023
                         string ch = strings[j][i].ToString();
                         int val = int.Parse(ch);
                         ints.Add(val);
-                        //Console.WriteLine($"{ch}: {val}: {ints[count]}");
                         count++;
                     }
                     else
                     {
                         check += strings[j][i];
                         string[] units = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-                        //string[] tens = { "eleven", "twelve", "thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty","thirty","fourty","fifty","sixty","seventy","eighty","ninety" };
 
                         for (int a = units.Count() - 1; a >= 0; a--)
                         {
@@ -74,7 +73,6 @@ namespace AoC_2023
                     }
                 }
                 int digit = Convert.ToInt32(String.Format("{0}{1}", ints[0], ints[ints.Count() - 1]));
-                Console.WriteLine(digit);
                 digits.Add(digit);
             }
             Total(ref digits);
