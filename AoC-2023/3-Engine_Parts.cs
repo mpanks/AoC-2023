@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
@@ -13,6 +14,7 @@ namespace AoC_2023
     }
     public class Challenge_3
     {
+        //Doesn't add numbers of they're at the end of a row
         private bool debug = false;
         private string FilePath = @"C:\Users\matth\OneDrive\Documents\Comp Sci\AoC\2023\AoC-2023\3-Engine_Parts.txt";
         private char[,] _grid;
@@ -60,32 +62,49 @@ namespace AoC_2023
         private void FindAjacent()
         {
             int total = 0;
-            string temp = string.Empty;
+            bool add = false;
+            string temp = "";
             for (int x = 0; x < _grid.GetLength(0); x++)
             {
-                bool add = false;
+                if ((add && temp != ""))
+                {
+                    total += int.Parse(temp);
+                    temp = "";
+                    add = false;
+                }
+
                 //iterates columns
                 for (int y = 0; y < _grid.GetLength(1); y++)
                 {
                     //iterates rows
-                    if (_grid[x, y] != '.' && char.IsNumber(_grid[x, y]))
+                    if (char.IsNumber(_grid[x, y]))
                     {
-                        Console.WriteLine(_grid[x,y]);
-                        if (CheckDirections(ref x, ref y) && add)
+                        temp += _grid[x, y]; //concats digits to string
+                        //temp added to total if "symbol" detected adjacent to num
+                        //Console.WriteLine(_grid[x, y]);
+                        if (CheckDirections(ref _grid, ref x, ref y) && !add)
                         {
-                            temp += _grid[x, y];
+                            add = true;
                         }
                     }
+                    else if ((add && temp != ""))
+                    {
+                        total += int.Parse(temp);
+                        temp = "";
+                        add = false;
+                    }
+                    //Console.WriteLine(total);
+                    else
+                    {
+                        temp = "";
+                    }
                 }
-                //if (temp != "")
-                //{
-                //    total += int.Parse(temp);
-                //}
-                //Console.WriteLine(total);
             }
+            Console.WriteLine($"Total: {total}");
         }
-        private bool CheckDirections(ref int x, ref int y)
+        private bool CheckDirections(ref char[,] _grid, ref int x, ref int y)
         {
+            char[] symbols = { '$', '%', '&','*','+','=','-','@','/','?','#','*' };
             try
             {
 
@@ -108,15 +127,22 @@ namespace AoC_2023
                         else
                         {
                             //Checks up, down, left, right
-                            //Needs to be able to check diags
-                            if(_y!=y+2) Console.Write($"{_x}: {_y}: {_grid[_x, _y]} ");
+                            //if (_y != y + 2) Console.Write($"{_x}: {_y}: {_grid[_x, _y]} ");
+                            if (_x >= _grid.GetLength(0)) { }
+                            else if (_y >= _grid.GetLength(1)) { }
+                            else
+                            {
+                                if (symbols.Contains(_grid[_x, _y]))
+                                {
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }
-                Console.WriteLine();
-
+                //Console.WriteLine();
             }
-            catch (Exception e) { }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             return false;
         }
     }
