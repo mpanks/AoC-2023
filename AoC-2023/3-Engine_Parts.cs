@@ -57,7 +57,53 @@ namespace AoC_2023
                     Console.WriteLine();
                 }
             }
-            FindAjacent();
+            //FindAjacent();
+        }
+        private void FindRatios()
+        {
+            int total = 0;
+            bool mul = false;
+            string temp = "";
+            for (int x = 0; x < _grid.GetLength(0); x++)
+            {
+                if ((mul && temp != ""))
+                {
+                    //Adds values if they're at the end of the row
+                    total += int.Parse(temp);
+                    temp = "";
+                    mul = false;
+                }
+
+
+                for (int y = 0; y < _grid.GetLength(1); y++)
+                {
+
+                    if (_grid[x, y]=='*')
+                    {
+                        temp += _grid[x, y];
+                       // if (GetNums() && !mul)
+                        {
+                            mul = true;
+                        }
+                    }
+                    else if ((mul && temp != ""))
+                    {
+                        total += int.Parse(temp);
+                        temp = "";
+                        mul = false;
+                    }
+
+                    else
+                    {
+                        temp = "";
+                    }
+                }
+            }
+            Console.WriteLine($"Total: {total}");
+        }
+        private void GetNums()
+        {
+
         }
         private void FindAjacent()
         {
@@ -68,20 +114,19 @@ namespace AoC_2023
             {
                 if ((add && temp != ""))
                 {
+                    //Adds values if they're at the end of the row
                     total += int.Parse(temp);
                     temp = "";
                     add = false;
                 }
 
-                //iterates columns
+                
                 for (int y = 0; y < _grid.GetLength(1); y++)
                 {
-                    //iterates rows
+                    
                     if (char.IsNumber(_grid[x, y]))
                     {
-                        temp += _grid[x, y]; //concats digits to string
-                        //temp added to total if "symbol" detected adjacent to num
-                        //Console.WriteLine(_grid[x, y]);
+                        temp += _grid[x, y]; 
                         if (CheckDirections(ref _grid, ref x, ref y) && !add)
                         {
                             add = true;
@@ -93,7 +138,7 @@ namespace AoC_2023
                         temp = "";
                         add = false;
                     }
-                    //Console.WriteLine(total);
+                    
                     else
                     {
                         temp = "";
@@ -127,7 +172,7 @@ namespace AoC_2023
                         else
                         {
                             //Checks up, down, left, right
-                            //if (_y != y + 2) Console.Write($"{_x}: {_y}: {_grid[_x, _y]} ");
+                            
                             if (_x >= _grid.GetLength(0)) { }
                             else if (_y >= _grid.GetLength(1)) { }
                             else
@@ -140,7 +185,6 @@ namespace AoC_2023
                         }
                     }
                 }
-                //Console.WriteLine();
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
             return false;
